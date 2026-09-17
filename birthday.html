@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Birthday ♡</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "Noto Sans KR",
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff5fa,
+                    #f5f0ff,
+                    #f0f8ff
+                );
+
+            color: #514650;
+
+            overflow-x: hidden;
+        }
+
+
+        /* 전체 */
+
+        .birthday-page {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 35px 20px 80px;
+
+            position: relative;
+        }
+
+
+        /* 장식 */
+
+        .deco {
+    position: fixed;
+    font-size: 25px;
+    pointer-events: none;
+    opacity: 0.8;
+
+    animation: floatDecor 4s ease-in-out infinite;
+}
+
+@keyframes floatDecor {
+    0%, 100% {
+        transform: translateY(0) rotate(-5deg);
+    }
+
+    50% {
+        transform: translateY(-12px) rotate(5deg);
+    }
+}
+
+
+        .deco-1 {
+            top: 10%;
+            left: 8%;
+            transform: rotate(-15deg);
+        }
+
+
+        .deco-2 {
+            top: 18%;
+            right: 9%;
+            transform: rotate(12deg);
+        }
+
+
+        .deco-3 {
+            bottom: 18%;
+            left: 10%;
+            transform: rotate(10deg);
+        }
+
+
+        .deco-4 {
+            bottom: 10%;
+            right: 8%;
+            transform: rotate(-12deg);
+        }
+
+
+        /* 카드 */
+
+        .card {
+
+            width: 100%;
+
+            max-width: 520px;
+
+            background: rgba(255,255,255,0.9);
+
+            border: 2px solid #ffffff;
+
+            border-radius: 28px;
+
+            padding: 42px 30px 35px;
+
+            box-shadow:
+                0 18px 50px rgba(180, 150, 180, 0.18);
+
+            text-align: center;
+
+            position: relative;
+
+            overflow: hidden;
+            animation: cardAppear 0.7s ease-out;
+        }
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+        .ribbon {
+
+            font-size: 32px;
+
+            margin-bottom: 12px;
+        }
+
+
+       .question-number {
+    display: inline-block;
+
+    padding: 7px 14px;
+
+    border-radius: 999px;
+
+    background: #fff0f6;
+
+    color: #c77fa5;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.8px;
+
+    margin-bottom: 18px;
+
+    box-shadow:
+        0 4px 12px rgba(210, 150, 180, 0.12);
+}
+
+
+       .question {
+    font-size: 21px;
+
+    line-height: 1.6;
+
+    font-weight: 700;
+
+    letter-spacing: -0.7px;
+
+    color: #514650;
+
+    margin: 0 0 30px;
+}
+
+
+        /* 답변 */
+
+        .answers {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+        }
+
+
+        .answer-button {
+    width: 100%;
+
+    border: 2px solid #f2dce9;
+
+    background: rgba(255, 250, 252, 0.95);
+
+    border-radius: 18px;
+
+    padding: 17px 18px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #5d5059;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 14px rgba(200, 160, 180, 0.08);
+
+    transition:
+        transform 0.18s,
+        box-shadow 0.18s,
+        background 0.18s,
+        border-color 0.18s;
+}
+
+
+       .answer-button:hover {
+    transform: translateY(-3px);
+
+    background: #fff1f8;
+
+    border-color: #e8bcd2;
+
+    box-shadow:
+        0 10px 22px rgba(220, 170, 200, 0.18);
+}
+
+
+        /* 오답 화면 */
+
+       .wrong-screen {
+    display: none;
+
+    text-align: center;
+
+    padding: 8px 0 5px;
+
+    animation: wrongAppear 0.45s ease-out;
+}
+
+@keyframes wrongAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+        .wrong-screen.show {
+
+            display: block;
+        }
+
+
+        .wrong-image {
+    width: 100%;
+
+    max-height: 260px;
+
+    object-fit: contain;
+
+    border-radius: 22px;
+
+    margin-bottom: 22px;
+
+    box-shadow:
+        0 10px 25px rgba(200, 160, 180, 0.15);
+}
+
+
+        .wrong-message {
+    font-size: 20px;
+
+    line-height: 1.6;
+
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+
+    color: #66535f;
+
+    margin: 0 0 25px;
+}
+
+
+        .retry-button {
+    border: none;
+
+    background: #d99ac0;
+
+    color: white;
+
+    border-radius: 999px;
+
+    padding: 13px 24px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 16px rgba(200, 140, 175, 0.22);
+
+    transition:
+        transform 0.18s,
+        box-shadow 0.18s,
+        background 0.18s;
+}
+
+.retry-button:hover {
+    background: #cb88b0;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 20px rgba(200, 140, 175, 0.28);
+}
+
+        /* 제작자 */
+
+        .creator {
+
+            position: fixed;
+
+            right: 17px;
+
+            bottom: 13px;
+
+            font-size: 11px;
+
+            color: #b49cac;
+        }
+
+
+        @media (max-width: 600px) {
+
+            .birthday-page {
+
+                padding:
+                    20px
+                    15px
+                    70px;
+            }
+
+
+            .card {
+
+                padding:
+                    34px
+                    20px
+                    28px;
+
+                border-radius: 24px;
+            }
+
+
+            .question {
+
+                font-size: 19px;
+            }
+
+        }
+
+    </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    const SUPABASE_URL = "https://ogmyrjrezoifdprlvxyd.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_tYjjFeYSl7p8KkrSwT-YBQ_Szk184co";
+
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+</script>
+
+</head>
+
+
+<body>
+
+
+<div class="birthday-page">
+
+
+    <!-- 귀여운 장식 -->
+
+    <div class="deco deco-1">
+        🎀
+    </div>
+
+    <div class="deco deco-2">
+        🎀
+    </div>
+
+    <div class="deco deco-3">
+        🎀
+    </div>
+
+    <div class="deco deco-4">
+        🎀
+    </div>
+
+
+    <main class="card">
+
+
+        <!-- 질문 화면 -->
+
+        <div id="questionScreen">
+
+            <div class="ribbon">
+                🎂
+            </div>
+
+
+            <div class="question-number">
+                QUESTION 01
+            </div>
+
+
+            <h1
+                class="question"
+                id="question"
+            >
+                질문을 불러오는 중...
+            </h1>
+
+
+            <div class="answers">
+
+                <button
+                    class="answer-button"
+                    id="answerA"
+                    onclick="selectAnswer('A')"
+                >
+                    -
+                </button>
+
+
+                <button
+                    class="answer-button"
+                    id="answerB"
+                    onclick="selectAnswer('B')"
+                >
+                    -
+                </button>
+
+            </div>
+
+        </div>
+        <!-- Q2 화면 -->
+
+        <div
+            id="q2Screen"
+            style="display: none;"
+        >
+
+            <div class="ribbon">
+                🎁
+            </div>
+
+
+            <div class="question-number">
+                QUESTION 02
+            </div>
+
+
+            <h1
+                class="question"
+                id="q2Question"
+            >
+                질문을 불러오는 중...
+            </h1>
+
+
+            <div class="answers">
+
+                <button
+                    class="answer-button"
+                    id="q2AnswerA"
+                    onclick="selectQ2Answer('A')"
+                >
+                    -
+                </button>
+
+
+                <button
+                    class="answer-button"
+                    id="q2AnswerB"
+                    onclick="selectQ2Answer('B')"
+                >
+                    -
+                </button>
+
+            </div>
+
+        </div>
+<div id="q3Screen" class="screen" style="display: none;">
+    <div class="question-card">
+        <p class="question-number">QUESTION 03</p>
+        <h1 id="q3Question"></h1>
+
+        <textarea
+            id="q3Answer"
+            placeholder="예: 10월 3일 오후 7시"
+            rows="4"
+        ></textarea>
+
+        <button class="answer-button" onclick="submitQ3Answer()">
+            입력 완료
+        </button>
+    </div>
+</div>
+        <!-- 오답 화면 -->
+
+        <div
+            class="wrong-screen"
+            id="wrongScreen"
+        >
+
+            <img
+                class="wrong-image"
+                id="wrongImage"
+                alt=""
+            >
+
+
+            <p
+                class="wrong-message"
+                id="wrongMessage"
+            >
+                진짜로 그렇게 생각한다고?
+                <br>
+                다시 생각해봐
+            </p>
+
+
+            <button
+                class="retry-button"
+                onclick="retryQuestion()"
+            >
+                다시 생각해보기
+            </button>
+
+        </div>
+
+                <!-- 최종 생일 축하 화면 -->
+
+        <!-- 최종 생일 축하 화면 -->
+<div
+    id="resultScreen"
+    style="display: none; position: relative;"
+>
+
+    <!-- 음악 재생 버튼 -->
+    <button
+        id="musicButton"
+        type="button"
+        style="
+            position: absolute;
+            top: 0;
+            right: 0;
+            border: none;
+            background: #fff0f6;
+            color: #c77fa5;
+            border-radius: 999px;
+            padding: 9px 13px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(210, 150, 180, 0.15);
+        "
+        onclick="toggleMusic()"
+    >
+        ♫ 음악
+    </button>
+
+    <!-- 리본 -->
+    <div class="ribbon">
+        🎀
+    </div>
+
+    <!-- 생일 축하 제목 -->
+    <h1
+        id="resultTitle"
+        class="question"
+    >
+        생일 축하해!
+    </h1>
+
+    <!-- 사진 / GIF -->
+    <div
+        id="resultContent"
+        style="
+            margin: 0 0 25px;
+        "
+    >
+        <!-- 사진/GIF가 여기에 표시됩니다 -->
+    </div>
+
+    <!-- 축하 메시지 -->
+    <p
+        id="resultMessage"
+        style="white-space: pre-line;"
+    >
+        오늘의 특별한 생일을
+        마음껏 즐겨주세요.
+    </p>
+
+    <!-- 음악 -->
+    <div id="musicPlayer"></div>
+
+</div>
+
+
+
+
+    </main>
+
+
+</div>
+
+
+<div class="creator">
+    ♡ @밍밍
+</div>
+
+
+
+<script>
+
+
+    // URL에서 이벤트 ID 가져오기
+
+    const params =
+        new URLSearchParams(location.search);
+
+
+    const eventId =
+        params.get("id");
+let selectedQ1 = "";
+let selectedQ2 = "";
+
+
+    // 이벤트 불러오기
+
+    let event = null;
+
+async function loadEvent() {
+
+    const { data, error } = await supabaseClient
+        .from("birthday_events")
+        .select("*")
+        .eq("id", eventId)
+        .single();
+
+    if (error) {
+
+        console.error(error);
+
+        document.getElementById("question").textContent =
+            "이벤트를 불러올 수 없습니다.";
+
+        document.getElementById("answerA").style.display =
+            "none";
+
+        document.getElementById("answerB").style.display =
+            "none";
+
+        return false;
+    }
+
+    event = data;
+
+    return true;
+}
+
+
+
+    // 이벤트가 없는 경우
+
+    
+
+
+
+    // Q1 불러오기
+
+    function applyEventData() {
+
+    if (!event) return;
+
+   // Q1
+document.getElementById("question").textContent =
+    event.q1_question || "";
+
+document.getElementById("answerA").textContent =
+    event.q1_answer_a || "";
+
+document.getElementById("answerB").textContent =
+    event.q1_answer_b || "";
+
+document.getElementById("answerA").style.display =
+    "block";
+
+document.getElementById("answerB").style.display =
+    "block";
+
+    // Q2
+    document.getElementById("q2Question").textContent =
+        event.q2_question || "";
+
+    document.getElementById("q2AnswerA").textContent =
+        event.q2_answer_a || "";
+
+    document.getElementById("q2AnswerB").textContent =
+        event.q2_answer_b || "";
+
+    // Q3
+    document.getElementById("q3Question").textContent =
+        event.q3_question || "";
+
+    // 결과 화면
+    document.getElementById("resultTitle").textContent =
+        event.result_title || "생일 축하해!";
+
+    document.getElementById("resultMessage").textContent =
+        event.result_message ||
+        "오늘의 특별한 생일을 마음껏 즐겨주세요.";
+
+    // 결과 사진 / GIF
+    const resultContent =
+        document.getElementById("resultContent");
+
+    if (event.result_image) {
+
+        const image = document.createElement("img");
+
+        image.src = event.result_image;
+        image.alt = "생일 사진";
+
+        image.style.width = "100%";
+        image.style.maxHeight = "350px";
+        image.style.objectFit = "contain";
+        image.style.borderRadius = "22px";
+        image.style.boxShadow =
+            "0 10px 25px rgba(200, 160, 180, 0.15)";
+
+        resultContent.innerHTML = "";
+        resultContent.appendChild(image);
+
+    } else {
+
+        resultContent.style.display = "none";
+
+    }
+}
+
+
+    // 답변 선택
+
+    function selectAnswer(answer) {
+
+    if (!event) {
+        return;
+    }
+
+    selectedQ1 = answer;
+
+
+    if (answer === event.q1_correct_answer) {
+        showQuestion2();
+    } else {
+        showWrongScreen();
+    }
+}
+// Q2 답변 선택
+// Q2 답변 선택
+function selectQ2Answer(answer) {
+
+    selectedQ2 = answer;
+
+    document.getElementById("q2Screen")
+        .style.display = "none";
+
+    document.getElementById("q3Screen")
+        .style.display = "block";
+}
+function showQuestion2() {
+
+    document.getElementById("questionScreen")
+        .style.display = "none";
+
+    document.getElementById("wrongScreen")
+        .classList.remove("show");
+
+    document.getElementById("q2Screen")
+        .style.display = "block";
+
+}
+// Q3 답변 제출
+window.submitQ3Answer = async function () {
+    const answer = document.getElementById("q3Answer").value.trim();
+
+    if (!answer) {
+        alert("날짜와 시간을 입력해주세요.");
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .from("birthday_responses")
+        .insert({
+            event_id: eventId,
+            q1_answer: selectedQ1,
+            q2_answer: selectedQ2,
+            q3_answer: answer
+        });
+
+    if (error) {
+        console.error("응답 저장 실패:", error);
+        alert("응답 저장에 실패했습니다.");
+        return;
+    }
+
+    showResultScreen();
+
+};
+function showResultScreen() {
+
+    document.getElementById("questionScreen")
+        .style.display = "none";
+
+    document.getElementById("q2Screen")
+        .style.display = "none";
+
+    document.getElementById("q3Screen")
+        .style.display = "none";
+
+    document.getElementById("wrongScreen")
+        .classList.remove("show");
+
+    document.getElementById("resultScreen")
+        .style.display = "block";
+        setupMusic();
+}
+    // 오답 화면
+
+    function showWrongScreen() {
+
+    const questionScreen =
+        document.getElementById("questionScreen");
+
+    const wrongScreen =
+        document.getElementById("wrongScreen");
+
+    questionScreen.style.display =
+        "none";
+
+    wrongScreen.classList.add("show");
+
+
+    // Q1 오답 이미지
+    const wrongImage =
+        document.getElementById("wrongImage");
+
+    if (event.q1_wrong_image) {
+
+        wrongImage.src =
+            event.q1_wrong_image;
+
+        wrongImage.style.display =
+            "block";
+
+    } else {
+
+        wrongImage.style.display =
+            "none";
+    }
+
+
+    // Q1 오답 메시지
+    document.getElementById("wrongMessage").textContent =
+        event.q1_wrong_message ||
+        "진짜로 그렇게 생각한다고? 다시 생각해봐";
+}
+
+
+
+    // 다시 질문으로
+
+    function retryQuestion() {
+
+        document.getElementById("wrongScreen")
+            .classList.remove("show");
+
+        document.getElementById("questionScreen")
+            .style.display = "block";
+
+    }
+
+    // YouTube 음악 재생
+let youtubePlayer = null;
+let isMusicPlaying = false;
+
+
+// YouTube 영상 ID 가져오기
+function getYoutubeVideoId(url) {
+
+    if (!url) return null;
+
+    const match = url.match(
+        /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([^&?/]+)/
+    );
+
+    return match ? match[1] : null;
+}
+
+
+// 음악 준비
+function setupMusic() {
+
+    const videoId = getYoutubeVideoId(event.music);
+
+    if (!videoId) {
+        document.getElementById("musicButton").style.display = "none";
+        return;
+    }
+
+    const playerContainer =
+        document.getElementById("musicPlayer");
+
+    playerContainer.innerHTML = `
+        <iframe
+            id="youtubeAudio"
+            width="1"
+            height="1"
+            src="https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&controls=0&loop=1&playlist=${videoId}"
+            title="Birthday Music"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            style="
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                opacity: 0;
+                pointer-events: none;
+            "
+        ></iframe>
+    `;
+
+    youtubePlayer =
+        document.getElementById("youtubeAudio");
+}
+
+
+// 음악 재생 / 일시정지
+function toggleMusic() {
+
+    if (!youtubePlayer) return;
+
+    if (!isMusicPlaying) {
+
+        youtubePlayer.contentWindow.postMessage(
+            JSON.stringify({
+                event: "command",
+                func: "playVideo",
+                args: []
+            }),
+            "*"
+        );
+
+        isMusicPlaying = true;
+
+        document.getElementById("musicButton").textContent =
+            "Ⅱ 음악";
+
+    } else {
+
+        youtubePlayer.contentWindow.postMessage(
+            JSON.stringify({
+                event: "command",
+                func: "pauseVideo",
+                args: []
+            }),
+            "*"
+        );
+
+        isMusicPlaying = false;
+
+        document.getElementById("musicButton").textContent =
+            "♫ 음악";
+
+    }
+}
+
+(async function () {
+
+    const success = await loadEvent();
+
+    if (!success) {
+        return;
+    }
+
+    applyEventData();
+
+})();
+
+</script>
+
+
+</body>
+</html>

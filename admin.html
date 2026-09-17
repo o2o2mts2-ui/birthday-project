@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Birthday Studio - 관리자</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "Noto Sans KR",
+                sans-serif;
+
+            background: #f6f6f6;
+            color: #202020;
+        }
+
+
+        /* =========================
+           전체 레이아웃
+        ========================= */
+
+        .layout {
+            min-height: 100vh;
+            display: flex;
+        }
+
+
+        /* =========================
+           사이드바
+        ========================= */
+
+        .sidebar {
+            width: 230px;
+            min-height: 100vh;
+
+            background: #ffffff;
+            border-right: 1px solid #e8e8e8;
+
+            padding: 28px 18px;
+
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+
+        .brand {
+            padding: 0 10px;
+            margin-bottom: 42px;
+        }
+
+
+        .brand-title {
+            margin: 0;
+
+            font-size: 18px;
+            font-weight: 700;
+
+            letter-spacing: -0.4px;
+        }
+
+
+        .brand-subtitle {
+            margin: 5px 0 0;
+
+            font-size: 11px;
+            color: #a0a0a0;
+        }
+
+
+        /* =========================
+           메뉴
+        ========================= */
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+
+        .menu-item {
+            width: 100%;
+
+            border: none;
+            background: transparent;
+
+            border-radius: 9px;
+
+            padding: 11px 12px;
+
+            text-align: left;
+
+            font-size: 13px;
+            color: #777777;
+
+            cursor: pointer;
+        }
+
+
+        .menu-item:hover {
+            background: #f5f5f5;
+            color: #333333;
+        }
+
+
+        .menu-item.active {
+            background: #eeeeee;
+            color: #202020;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           메인
+        ========================= */
+
+        .main {
+            width: calc(100% - 230px);
+
+            margin-left: 230px;
+
+            padding: 42px 48px;
+
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           상단
+        ========================= */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 38px;
+        }
+
+
+        .page-title {
+            margin: 0;
+
+            font-size: 26px;
+            font-weight: 700;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .page-description {
+            margin: 7px 0 0;
+
+            font-size: 13px;
+            color: #999999;
+        }
+
+
+        .new-event-button {
+            border: none;
+
+            border-radius: 9px;
+
+            padding: 11px 17px;
+
+            background: #222222;
+            color: #ffffff;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+
+        .new-event-button:hover {
+            background: #333333;
+        }
+
+
+        /* =========================
+           통계 카드
+        ========================= */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 35px;
+        }
+
+
+        .stat-card {
+            background: #ffffff;
+
+            border: 1px solid #e8e8e8;
+
+            border-radius: 13px;
+
+            padding: 21px;
+        }
+
+
+        .stat-label {
+            font-size: 12px;
+            color: #999999;
+
+            margin-bottom: 10px;
+        }
+
+
+        .stat-value {
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           이벤트 영역
+        ========================= */
+
+        .section-title {
+            margin: 0 0 15px;
+
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+
+        .event-list {
+            display: flex;
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+
+        .event-card {
+            background: #ffffff;
+
+            border: 1px solid #e8e8e8;
+
+            border-radius: 13px;
+
+            padding: 20px 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+
+        .event-info {
+            min-width: 0;
+        }
+
+
+        .event-name {
+            margin: 0;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        .event-meta {
+            margin: 7px 0 0;
+
+            font-size: 12px;
+            color: #999999;
+        }
+
+
+        .event-actions {
+            display: flex;
+            gap: 7px;
+        }
+
+
+        .action-button {
+            border: 1px solid #dddddd;
+
+            background: #ffffff;
+
+            border-radius: 8px;
+
+            padding: 8px 11px;
+
+            font-size: 12px;
+            color: #555555;
+
+            cursor: pointer;
+        }
+
+
+        .action-button:hover {
+            background: #f6f6f6;
+        }
+
+
+        /* =========================
+           빈 상태
+        ========================= */
+
+        .empty-state {
+            background: #ffffff;
+
+            border: 1px dashed #dddddd;
+
+            border-radius: 13px;
+
+            padding: 55px 20px;
+
+            text-align: center;
+
+            color: #999999;
+
+            font-size: 13px;
+        }
+
+
+        .empty-icon {
+            font-size: 30px;
+            margin-bottom: 13px;
+        }
+
+
+        /* =========================
+           제작자 표시
+        ========================= */
+
+        .creator {
+            position: fixed;
+
+            right: 18px;
+            bottom: 15px;
+
+            font-size: 11px;
+            color: #aaaaaa;
+
+            letter-spacing: 0.3px;
+
+            user-select: none;
+        }
+
+
+        /* =========================
+           모바일
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                width: calc(100% - 190px);
+                margin-left: 190px;
+                padding: 30px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                width: 100%;
+                margin-left: 0;
+                padding: 25px 18px;
+            }
+
+            .topbar {
+                flex-direction: column;
+            }
+
+            .new-event-button {
+                width: 100%;
+            }
+
+            .event-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .event-actions {
+                width: 100%;
+            }
+
+            .action-button {
+                flex: 1;
+            }
+
+        }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    const SUPABASE_URL = "https://ogmyrjrezoifdprlvxyd.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_tYjjFeYSl7p8KkrSwT-YBQ_Szk184co";
+
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+</script>
+</head>
+
+
+<body>
+
+<div class="layout">
+
+
+    <!-- =========================
+         사이드바
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <h1 class="brand-title">
+                Birthday Studio
+            </h1>
+
+            <p class="brand-subtitle">
+                Event Manager
+            </p>
+
+        </div>
+
+
+       <nav class="menu">
+
+    <button
+        class="menu-item active"
+        id="eventsMenu"
+        onclick="showEvents()"
+    >
+        이벤트
+    </button>
+
+    <button
+        class="menu-item"
+        id="responsesMenu"
+        onclick="showResponses()"
+    >
+        응답
+    </button>
+
+    <button class="menu-item">
+        설정
+    </button>
+
+</nav>
+
+    </aside>
+
+
+
+    <!-- =========================
+         메인
+    ========================== -->
+
+    <main class="main">
+
+
+        <!-- 상단 -->
+
+        <header class="topbar">
+
+            <div>
+
+               <h2 class="page-title" id="pageTitle">
+    생일 이벤트
+</h2>
+
+<p class="page-description" id="pageDescription">
+    생일 이벤트를 만들고 관리하세요.
+</p>
+
+            </div>
+
+
+           <button class="primary-btn" onclick="createBirthdayEvent()">
+    + 새 생일 이벤트
+</button>
+
+        </header>
+
+
+
+        <!-- 통계 -->
+
+       <section class="stats">
+
+    <div class="stat-card">
+        <div class="stat-label">
+            전체 이벤트
+        </div>
+
+        <div class="stat-value" id="totalEvents">
+            0
+        </div>
+    </div>
+
+
+    <div class="stat-card">
+        <div class="stat-label">
+            활성 이벤트
+        </div>
+
+        <div class="stat-value" id="activeEvents">
+            0
+        </div>
+    </div>
+
+
+    <div class="stat-card">
+        <div class="stat-label">
+            전체 응답
+        </div>
+
+        <div class="stat-value" id="totalResponses">
+            0
+        </div>
+    </div>
+
+</section>
+
+
+
+        <!-- 이벤트 목록 -->
+
+        <section>
+
+            <h3 class="section-title">
+                내 생일 이벤트
+            </h3>
+
+
+           <div class="event-list" id="eventList"></div>
+
+<div
+    class="event-list"
+    id="responseList"
+    style="display: none;"
+></div>
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+<!-- 제작자 -->
+
+<div class="creator">
+    @밍밍
+</div>
+
+
+
+<script>
+
+    async function createBirthdayEvent() {
+
+    const eventName = prompt(
+        "생일 이벤트 이름을 입력해주세요.",
+        ""
+    );
+
+    if (!eventName) {
+        return;
+    }
+
+
+    const recipientName = prompt(
+        "생일 주인공 이름을 입력해주세요.",
+        ""
+    );
+
+    if (!recipientName) {
+        return;
+    }
+
+
+    // 이벤트 고유 ID
+    const eventId =
+        Math.random()
+            .toString(36)
+            .substring(2, 8);
+
+
+    const { error } = await supabaseClient
+        .from("birthday_events")
+        .insert({
+            id: eventId,
+            name: eventName,
+            recipient: recipientName,
+            active: true
+        });
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "이벤트 생성에 실패했습니다.\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    alert(
+        "생일 이벤트가 생성되었습니다!\n\n" +
+        "이벤트 ID : " + eventId
+    );
+
+
+    loadEvents();
+}
+async function loadEvents() {
+
+    const { data, error } = await supabaseClient
+        .from("birthday_events")
+        .select("*")
+        .order("created_at", {
+            ascending: false
+        });
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "이벤트를 불러오지 못했습니다.\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    const events = data || [];
+
+
+    // 통계
+    document.getElementById("totalEvents").textContent =
+        events.length;
+
+    document.getElementById("activeEvents").textContent =
+        events.filter(event => event.active).length;
+
+
+    // 전체 응답 수
+const { count: responseCount, error: responseError } =
+    await supabaseClient
+        .from("birthday_responses")
+        .select("*", { count: "exact", head: true });
+
+if (responseError) {
+    console.error("응답 수 조회 실패:", responseError);
+    document.getElementById("totalResponses").textContent = "0";
+} else {
+    document.getElementById("totalResponses").textContent =
+        responseCount || 0;
+}
+
+
+    // 이벤트 목록
+    const eventList =
+        document.getElementById("eventList");
+
+
+    if (events.length === 0) {
+
+        eventList.innerHTML = `
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    🎂
+                </div>
+
+                아직 만들어진 생일 이벤트가 없습니다.
+
+                <br><br>
+
+                위의
+                <strong>+ 새 생일 이벤트</strong>
+                버튼을 눌러 시작하세요.
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    eventList.innerHTML =
+        events.map(event => {
+
+            return `
+                <div class="event-card">
+
+                    <div class="event-info">
+
+                        <p class="event-name">
+                            ${event.name}
+                        </p>
+
+                        <p class="event-meta">
+                            ${event.recipient}
+                            · ID ${event.id}
+                            · ${event.active ? "활성" : "비활성"}
+                        </p>
+
+                    </div>
+
+
+                    <div class="event-actions">
+
+                        <button
+                            class="action-button"
+                            onclick="manageEvent('${event.id}')"
+                        >
+                            관리하기
+                        </button>
+
+
+                        <button
+                            class="action-button"
+                            onclick="copyEventLink('${event.id}')"
+                        >
+                            링크 복사
+                        </button>
+
+
+                        <button
+                            class="action-button"
+                            onclick="deleteEvent('${event.id}')"
+                        >
+                            삭제
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+async function showResponses() {
+
+    document.getElementById("eventsMenu").classList.remove("active");
+    document.getElementById("responsesMenu").classList.add("active");
+
+    document.getElementById("eventList").style.display = "none";
+    document.getElementById("responseList").style.display = "block";
+
+    document.getElementById("pageTitle").textContent = "응답 관리";
+    document.getElementById("pageDescription").textContent =
+        "친구들이 남긴 생일 응답을 확인하세요.";
+
+    const responseList = document.getElementById("responseList");
+
+    const { data: events, error: eventError } = await supabaseClient
+        .from("birthday_events")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (eventError) {
+        console.error("이벤트 불러오기 실패:", eventError);
+        responseList.innerHTML = `
+            <div class="empty-state">
+                이벤트를 불러오지 못했습니다.
+            </div>
+        `;
+        return;
+    }
+
+    const { data: responses, error: responseError } = await supabaseClient
+        .from("birthday_responses")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (responseError) {
+        console.error("응답 불러오기 실패:", responseError);
+        responseList.innerHTML = `
+            <div class="empty-state">
+                응답을 불러오지 못했습니다.
+            </div>
+        `;
+        return;
+    }
+
+    if (!responses || responses.length === 0) {
+        responseList.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">💌</div>
+                아직 저장된 응답이 없습니다.
+            </div>
+        `;
+        return;
+    }
+
+    responseList.innerHTML = `
+        <div style="padding: 24px;">
+
+            <h2 style="margin-bottom: 20px;">
+                응답 목록
+            </h2>
+
+            <div style="margin-bottom: 20px;">
+                <select
+                    id="responseEventFilter"
+                    style="
+                        padding: 10px 12px;
+                        border: 1px solid #dddddd;
+                        border-radius: 8px;
+                        background: #ffffff;
+                        font-size: 13px;
+                    "
+                >
+                    <option value="all">전체 이벤트</option>
+
+                    ${events.map(event => `
+                        <option value="${event.id}">
+                            ${event.name} · ${event.recipient || ""}
+                        </option>
+                    `).join("")}
+                </select>
+            </div>
+
+            <div id="responseCards"></div>
+
+        </div>
+    `;
+
+    const responseCards = document.getElementById("responseCards");
+    const filter = document.getElementById("responseEventFilter");
+
+    function renderResponses(selectedEventId = "all") {
+
+        const filteredResponses =
+            selectedEventId === "all"
+                ? responses
+                : responses.filter(
+                    response => response.event_id === selectedEventId
+                );
+
+        if (filteredResponses.length === 0) {
+            responseCards.innerHTML = `
+                <div class="empty-state">
+                    해당 이벤트에 저장된 응답이 없습니다.
+                </div>
+            `;
+            return;
+        }
+
+        responseCards.innerHTML = filteredResponses.map(response => {
+
+            const event = events.find(
+                item => item.id === response.event_id
+            );
+
+            const q1Text =
+                response.q1_answer === "A"
+                    ? event?.q1_answer_a
+                    : response.q1_answer === "B"
+                        ? event?.q1_answer_b
+                        : "-";
+
+            const q2Text =
+                response.q2_answer === "A"
+                    ? event?.q2_answer_a
+                    : response.q2_answer === "B"
+                        ? event?.q2_answer_b
+                        : "-";
+
+            return `
+                <div
+                    class="event-card"
+                    style="margin-bottom: 16px;"
+                >
+
+                    <div class="event-info">
+
+                        <p class="event-name">
+                            ${event ? event.name : "알 수 없는 이벤트"}
+                        </p>
+
+                        <p class="event-meta">
+                            응답 시간:
+                            ${new Date(response.created_at).toLocaleString("ko-KR")}
+                        </p>
+
+                    </div>
+
+                    <div style="
+                        margin-top: 16px;
+                        line-height: 1.8;
+                    ">
+
+                        <div>
+                            <strong>Q1</strong>
+                            ${response.q1_answer || "-"}
+                            ${q1Text ? ` — ${q1Text}` : ""}
+                        </div>
+
+                        <div>
+                            <strong>Q2</strong>
+                            ${response.q2_answer || "-"}
+                            ${q2Text ? ` — ${q2Text}` : ""}
+                        </div>
+
+                        <div>
+                            <strong>Q3</strong>
+                            ${response.q3_answer || "-"}
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+    }
+
+    renderResponses();
+
+    filter.addEventListener("change", function () {
+        renderResponses(this.value);
+    });
+}
+
+function filterResponses() {
+    const filter = document.getElementById("responseEventFilter").value;
+
+    const responses = filter === "all"
+        ? window.allResponses
+        : window.allResponses.filter(
+            response => response.event_id === filter
+        );
+
+    const events = window.allEvents;
+
+    const list = document.getElementById("responsesList");
+
+    if (!responses.length) {
+        list.innerHTML = `
+            <div style="
+                padding: 50px;
+                text-align: center;
+                color: #999;
+                border: 1px solid #eee;
+                border-radius: 12px;
+            ">
+                아직 제출된 응답이 없습니다.
+            </div>
+        `;
+        return;
+    }
+
+    list.innerHTML = responses.map(response => {
+
+        const event = events.find(
+            event => event.id === response.event_id
+        );
+
+        const q1Text = response.q1_answer === "A"
+            ? event?.q1_answer_a
+            : event?.q1_answer_b;
+
+        const q2Text = response.q2_answer === "A"
+            ? event?.q2_answer_a
+            : event?.q2_answer_b;
+
+        const date = new Date(response.created_at);
+
+        return `
+            <div style="
+                border: 1px solid #e5e5e5;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 12px;
+                background: white;
+            ">
+
+                <div style="
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 16px;
+                ">
+                    <strong>
+                        ${event?.name || "삭제된 이벤트"}
+                    </strong>
+
+                    <span style="
+                        font-size: 12px;
+                        color: #999;
+                    ">
+                        ${date.toLocaleString("ko-KR")}
+                    </span>
+                </div>
+
+                <div style="line-height: 2; font-size: 14px;">
+                    <div>
+                        <strong>Q1</strong>
+                        ${response.q1_answer || "-"}
+                        ${q1Text ? ` — ${q1Text}` : ""}
+                    </div>
+
+                    <div>
+                        <strong>Q2</strong>
+                        ${response.q2_answer || "-"}
+                        ${q2Text ? ` — ${q2Text}` : ""}
+                    </div>
+
+                    <div>
+                        <strong>Q3</strong>
+                        ${response.q3_answer || "-"}
+                    </div>
+                </div>
+
+            </div>
+        `;
+    }).join("");
+}
+
+function showEvents() {
+    document.getElementById("responsesMenu").classList.remove("active");
+    document.getElementById("eventsMenu").classList.add("active");
+    document.getElementById("responseList").style.display = "none";
+    document.getElementById("eventList").style.display = "block";
+document.getElementById("pageTitle").textContent = "생일 이벤트";
+document.getElementById("pageDescription").textContent = "생일 이벤트를 만들고 관리하세요.";
+    loadEvents();
+}
+function manageEvent(eventId) {
+
+    location.href = "event.html?id=" + eventId;
+
+}
+
+
+function copyEventLink(eventId) {
+
+    const link =
+        location.href.replace("admin.html", "birthday.html")
+        + "?id=" + eventId;
+
+    navigator.clipboard.writeText(link);
+
+    alert("이벤트 링크가 복사되었습니다.");
+}
+
+
+async function deleteEvent(eventId) {
+
+    const confirmed =
+        confirm("이 생일 이벤트를 삭제할까요?");
+
+    if (!confirmed) {
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .from("birthday_events")
+        .delete()
+        .eq("id", eventId);
+
+    if (error) {
+
+        console.error("이벤트 삭제 실패:", error);
+
+        alert(
+            "이벤트 삭제에 실패했습니다.\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+    alert("이벤트가 삭제되었습니다.");
+
+    loadEvents();
+}
+
+
+// 페이지가 열릴 때 이벤트 불러오기
+loadEvents();
+</script>
+
+
+</body>
+</html>
