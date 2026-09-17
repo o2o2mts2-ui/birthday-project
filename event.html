@@ -202,6 +202,8 @@
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
 );
+
+
 </script>
 </head>
 
@@ -980,8 +982,32 @@ q1WrongImageFile.addEventListener("change", async function () {
     }
 
 
-    // 페이지 시작
+    // 관리자 로그인 여부 확인
+async function checkAdminSession() {
+    const {
+        data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+        window.location.replace("index.html");
+        return false;
+    }
+
+    return true;
+}
+
+// 페이지 시작
+async function initializeEventPage() {
+    const isLoggedIn = await checkAdminSession();
+
+    if (!isLoggedIn) {
+        return;
+    }
+
     loadEvent();
+}
+
+initializeEventPage();
 
 </script>
 

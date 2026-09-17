@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Birthday Studio</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
 
@@ -272,36 +273,48 @@
 
             <!-- 로그인 -->
 
-            <form onsubmit="login(event)">
+           <form onsubmit="login(event)">
+    <div class="form-group">
+        <label
+            for="email"
+            class="form-label"
+        >
+            관리자 이메일
+        </label>
+        <input
+            type="email"
+            id="email"
+            class="password-input"
+            placeholder="이메일을 입력하세요"
+            autocomplete="username"
+            required
+        >
+    </div>
 
-                <div class="form-group">
+    <div class="form-group">
+        <label
+            for="password"
+            class="form-label"
+        >
+            관리자 비밀번호
+        </label>
+        <input
+            type="password"
+            id="password"
+            class="password-input"
+            placeholder="비밀번호를 입력하세요"
+            autocomplete="current-password"
+            required
+        >
+    </div>
 
-                    <label
-                        for="password"
-                        class="form-label"
-                    >
-                        관리자 비밀번호
-                    </label>
-
-                    <input
-                        type="password"
-                        id="password"
-                        class="password-input"
-                        placeholder="비밀번호를 입력하세요"
-                        autocomplete="current-password"
-                    >
-
-                </div>
-
-
-                <button
-                    type="submit"
-                    class="login-button"
-                >
-                    로그인
-                </button>
-
-            </form>
+    <button
+        type="submit"
+        class="login-button"
+    >
+        로그인
+    </button>
+</form>
 
 
         </section>
@@ -317,29 +330,58 @@
 
 
     <script>
+    const SUPABASE_URL = "https://ogmyrjrezoifdprlvxyd.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY =
+        "sb_publishable_tYjjFeYSl7p8KkrSwT-YBQ_Szk184co";
 
-        function login(event) {
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
 
-            event.preventDefault();
+    // 이미 로그인되어 있으면 관리자 페이지로 이동
+    async function checkSession() {
+        const {
+            data: { session }
+        } = await supabaseClient.auth.getSession();
 
-            const password =
-                document.getElementById("password").value;
+        if (session) {
+            window.location.href = "admin.html";
+        }
+    }
 
+    // 로그인
+    async function login(event) {
+        event.preventDefault();
 
-            if (password === "") {
+        const email =
+            document.getElementById("email").value.trim();
 
-                alert("비밀번호를 입력해주세요.");
+        const password =
+            document.getElementById("password").value;
 
-                return;
-
-            }
-
-
-            alert("로그인 기능은 다음 단계에서 연결합니다.");
-
+        if (!email || !password) {
+            alert("이메일과 비밀번호를 입력해주세요.");
+            return;
         }
 
-    </script>
+        const { error } =
+            await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+        if (error) {
+            alert("이메일 또는 비밀번호가 올바르지 않습니다.");
+            console.error(error);
+            return;
+        }
+
+        window.location.href = "admin.html";
+    }
+
+    checkSession();
+</script>
 
 
 </body>
